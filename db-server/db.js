@@ -26,45 +26,21 @@ module.exports = {
     });
   },
 
-  'Address': function (recordId, cb) {
-    client.query('SELECT * FROM "Schools" WHERE address=' + recordId + ';', function(err, result) {
+  'address': function (recordId, cb) {
+    client.query('SELECT * FROM "schools" WHERE id=' + recordId + ';', function(err, result) {
       if(err) {
         return console.error('error running query', err);
       }
       cb(result);
     });
   },
-  'Contacts': function (recordId, cb) {
-    client.query('SELECT * FROM "School" WHERE contacts=' + recordId + ';', function(err, result) {
+  'contacts': function (recordId, cb) {
+    client.query('SELECT * FROM "schools" WHERE id=' + recordId + ';', function(err, result) {
       if(err) {
         return console.error('error running query', err);
       }
       cb(result);
     });
   },
-  'Departments': function (recordId, cb) {
-    /*client.query('SELECT * FROM "School" WHERE contacts=' + recordId + ';', function(err, result) {
-      if(err) {
-        return console.error('error running query', err);
-      }
-      cb(result);
-    });*/
-  },
-  'Faculties': function (recordId, cb) {
-    client.query('SELECT * FROM "School" WHERE id=' + recordId + ';', function(err, result) {
-      if(err) {
-        return console.error('error running query', err);
-      }
-      cb(result);
-    });
-  },
-  'Workers': function (recordId, cb) {
-    client.query('SELECT * FROM "School" WHERE id=' + recordId + ';', function(err, result) {
-      if(err) {
-        return console.error('error running query', err);
-      }
-      cb(result);
-    });
-  }
-
+  
 };

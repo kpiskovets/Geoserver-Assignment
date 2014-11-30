@@ -2,7 +2,41 @@
 			var aktLayer;
 			var feat;
 			var spatial_layer;
-            function init(){
+			var school;
+			var select;
+			var drawings;
+			
+            OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+                defaultHandlerOptions: {
+                    'single': true,
+                    'double': false,
+                    'pixelTolerance': 0,
+                    'stopSingle': false,
+                    'stopDouble': false
+                },
+
+                initialize: function(options) {
+                    this.handlerOptions = OpenLayers.Util.extend(
+                        {}, this.defaultHandlerOptions
+                    );
+                    OpenLayers.Control.prototype.initialize.apply(
+                        this, arguments
+                    ); 
+                    this.handler = new OpenLayers.Handler.Click(
+                        this, {
+                            'click': this.trigger
+                        }, this.handlerOptions
+                    );
+                }, 
+
+                trigger: function(e) {
+                    delete school.params.CQL_FILTER;
+					school.redraw();
+                }
+
+            });
+			
+			function init(){
 				
                 map = new OpenLayers.Map('map', {
                     controls: [],
@@ -11,10 +45,10 @@
 				
 				map.aktLayer=6;
 				//потрібні шари
-				var school = new OpenLayers.Layer.WMS(
+				school = new OpenLayers.Layer.WMS(
                     "LNU",
                     "http://localhost:8080/geoserver/wms",
-                    {layers: "School",
+                    {layers: "Lnu",
                      transparent: "true"}
                 );
 				var roads = new OpenLayers.Layer.WMS(
@@ -32,14 +66,14 @@
 				 var world = new OpenLayers.Layer.WMS(
                     "Global Map",
                     "http://localhost:8080/geoserver/wms",
-                    {layers: 'World'},{'displayInLayerSwitcher':false} 
+                    {layers: 'World'},{/*'displayInLayerSwitcher':false*/} 
                 );
 				var gwc = new OpenLayers.Layer.WMS(
                     "Global Imagery",
                     "http://maps.opengeo.org/geowebcache/service/wms",
 					
                     {layers: "bluemarble"},
-                    {'displayInLayerSwitcher':false,tileOrigin: new OpenLayers.LonLat(-180, -90)}
+                    {/*'displayInLayerSwitcher':false,*/tileOrigin: new OpenLayers.LonLat(-180, -90)}
                 );
 				
 				
@@ -50,11 +84,11 @@
 					{isBaseLayer: false}
 				);
 		
-				var roads = new OpenLayers.Layer.WMS("Roads",
+				/*var roads = new OpenLayers.Layer.WMS("Roads",
 					"http://demo.opengeo.org/geoserver/wms", 
 					{'layers': 'topp:tasmania_roads', transparent: true, format: 'image/gif'},
 					{isBaseLayer: false}
-				);
+				);*/
 		
 				var cities = new OpenLayers.Layer.WMS("Cities",
 					"http://demo.opengeo.org/geoserver/wms", 
@@ -72,21 +106,23 @@
 				spatial_layer = new OpenLayers.Layer.Vector("WFS", {'displayInLayerSwitcher':false,
 					strategies: [new OpenLayers.Strategy.BBOX()],
 					protocol: new OpenLayers.Protocol.WFS({
-						//url:  "http://localhost:8080/geoserver/wfs",
-						url: "http://demo.opengeo.org/geoserver/wms",
-						//featureType: "UKR_adm1"
-						featureType: "topp:tasmania_water_bodies"
+						url:  "http://localhost:8080/geoserver/wfs",
+						//url: "http://demo.opengeo.org/geoserver/wms",
+						featureType: "UKR_adm1"
+						//featureType: "topp:tasmania_water_bodies"
 					})
 				});
-				var select = new OpenLayers.Layer.Vector(
+				select = new OpenLayers.Layer.Vector(
 				"Selection", {
 				styleMap:new OpenLayers.Style(OpenLayers.Feature.Vector.style["select"]),'displayInLayerSwitcher':false
 				});
+				
 				var ls=new OpenLayers.Control.LayerSwitcherRadio(/*{'ascending':false}*/);
 				ls.useLegendGraphics = true;
 				ls.onChangeActiveLayer =  function () { refreshSpanActiveLayer() };
 				var drawings = new OpenLayers.Layer.Vector("Spatial",{'displayInLayerSwitcher':false});
 				map.addLayer(drawings);
+				
 				
 				vlayer = new OpenLayers.Layer.Vector( "Editable" ,{'displayInLayerSwitcher':false});
 				map.addLayer(vlayer);
@@ -101,11 +137,18 @@
 						enableKinetic: true
 					}
 					}));
+				map
 				map.addControl(new OpenLayers.Control.Zoom());
 				map.addControl(new OpenLayers.Control.Attribution());
+				
+				var click = new OpenLayers.Control.Click();
+                map.addControl(click);
+                click.activate();
+				
+				
 				var info = new OpenLayers.Control.WMSGetFeatureInfo({
-					//url: 'http://localhost:8080/geoserver/wms',
-					url: 'http://demo.opengeo.org/geoserver/wms',					
+					url: 'http://localhost:8080/geoserver/wms',
+					//url: 'http://demo.opengeo.org/geoserver/wms',					
 					title: 'Identify features by clicking',
 					text:"Info",
 					queryVisible: true,
@@ -217,7 +260,7 @@
 				
 				
 				//Adding Layers to the map
-				map.addLayers([/*world,gwc,roads,borders, school,*/gwc,political,roads,cities,water,spatial_layer,select]);
+				map.addLayers([world,gwc,roads,borders, school,/*gwc,political,roads,cities,water,*/spatial_layer,select]);
 				
 				
 				
@@ -271,7 +314,7 @@
 				
 				map.addControl(nav);
 				panel.addControls([nav.next, nav.previous]);
-				
+				panel.addControls([click]);
 				map.addControl(panel);
 				
 				
@@ -294,8 +337,8 @@
 				
 				
 				
-				//map.setCenter([25.6,49.49],7);
-				map.setCenter([146,-42],7);
+				map.setCenter([25.6,49.49],7);
+				//map.setCenter([146,-42],7);
                 
 				
 				
@@ -325,10 +368,7 @@
 			}
 			function refreshSpanActiveLayer()
 			{
-				//document.getElementById("activeLyr").innerHTML = map.layers[map.aktLayer].name;
-				//alert("new active layer "+map.layers[map.aktLayer].name);
-				//var lar=map.getLayersByName(map.layers[map.aktLayer].name)[0];
-				//alert("dfsdf "+lar.name);
+				
 				feat.protocol=OpenLayers.Protocol.WFS.fromWMSLayer(map.getLayersByName(map.layers[map.aktLayer].name)[0]);
 				spatial_layer.protocol=OpenLayers.Protocol.WFS.fromWMSLayer(map.getLayersByName(map.layers[map.aktLayer].name)[0]);
 			}

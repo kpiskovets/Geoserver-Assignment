@@ -31,7 +31,6 @@ app.get('/select', function (req, res) {
 app.get('/where', function (req, res) {
 	var tableName = req.query.table;
 	var recordId = req.query.id;
-
 	db[tableName](recordId, function (result) {
 		res.send(result.rows);
 	});
