@@ -43,7 +43,7 @@
 					theme: null  
                 });
 				
-				map.aktLayer=6;
+				map.aktLayer=5;
 				//потрібні шари
 				school = new OpenLayers.Layer.WMS(
                     "LNU",

@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <title>OpenLayers Map Controls Example</title>
+        <title>GeoServer LNU Aplication</title>
 
         <link rel="stylesheet" href="theme/default/style.css" type="text/css">
         <link rel="stylesheet" href="style.css" type="text/css">
@@ -25,6 +25,14 @@
                 height: 100%;
             }
 		
+		#OpenLayers_Control_Panel_84{
+		width:100%;
+		background-color:orange;
+		}
+		#OpenLayers_Control_Zoom_68{
+		margin-top:30px;
+		}
+		
 		.olControlPanel button {
           position: relative;
           display: block;
@@ -33,7 +41,7 @@
           padding: 0 5px;
           border-radius: 4px;
           height: 35px;
-		  opacity: 0.75;
+		  opacity: 1.0;
           background-color: white;
           float: left;
 		  left: 50px;
@@ -190,29 +198,31 @@
         <div id="map" ></div>
 		<div  id="output"></div>
 
-    <div id="db" style="">
-      <div class="resizer"></div>
-      <div id="db-container">
+<div id="db-hide-show">Show/Hide</div>
+<div id="db" style="">
+  <div class="resizer"></div>
+     <div id="db-container">
+	  
+	
+		
         <div id="tabs">
           <ul>
             <li><a href="#tabs-1">Address</a></li>
             <li><a href="#tabs-2">Contacts</a></li>
-            <!-- <li><a href="#tabs-3">Departments</a></li> -->
-            <!--<li><a href="#tabs-4">Faculties</a></li>
-            <li><a href="#tabs-5">Workers</a></li>-->
             <li><a href="#tabs-6">Schools</a></li>
             <li><a href="#tabs-7">Results</a></li>
+			
           </ul>
+		   			
           <div id="tabs-1"></div>
           <div id="tabs-2"></div>
-          <!-- <div id="tabs-3"></div> -->
-          <!--<div id="tabs-4"></div>
-          <div id="tabs-5"></div>-->
           <div id="tabs-6"></div>
           <div id="tabs-7"></div>
-        </div>
-      </div>
+		  
+          </div>
     </div>
+</div>
+
         
     <link rel="stylesheet" href="stas/styles.css" type="text/css">
     <link rel="stylesheet" href="stas/jquery-ui.min.css" type="text/css">

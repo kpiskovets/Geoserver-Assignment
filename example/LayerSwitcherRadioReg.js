@@ -333,16 +333,16 @@ OpenLayers.Control.LayerSwitcherRadio =
 				
 				// layer order controls
                 var upButton = document.createElement("img");
-                upButton.src = OpenLayers.Util.getImagesLocation() + "up.png";
+                upButton.src = OpenLayers.Util.getImagesLocation() + "down.png";
                 upButton.style.cursor = "pointer";  
-                upButton.alt = "move layer up";
-                upButton.title = "move layer up";
+                upButton.alt = "move layer down";
+                upButton.title = "move layer down";
                 
                 var downButton = document.createElement("img");
-                downButton.src = OpenLayers.Util.getImagesLocation() + "down.png";
+                downButton.src = OpenLayers.Util.getImagesLocation() + "up.png";
                 downButton.style.cursor = "pointer";
-                downButton.alt = "move layer down";
-                downButton.title = "move layer down";
+                downButton.alt = "move layer up";
+                downButton.title = "move layer up";
 
                 if (!baseLayer && !layer.inRange) {
                     inputElem.disabled = true;
@@ -634,7 +634,7 @@ OpenLayers.Control.LayerSwitcherRadio =
         this.div.style.left = "";
         this.div.style.fontFamily = "sans-serif";
         this.div.style.fontWeight = "bold";
-        this.div.style.marginTop = "3px";
+        this.div.style.marginTop = "30px";
         this.div.style.marginLeft = "3px";
         this.div.style.marginBottom = "3px";
         this.div.style.fontSize = "small";

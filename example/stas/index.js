@@ -1,6 +1,10 @@
 
 $(function () {
 	"use strict";
+	
+	$('#db-hide-show').click(function () {
+		$('#db').toggleClass('show');
+	});
 
 	$("#db").resizable({ expandButton: $('#db>.resizer') });
 
